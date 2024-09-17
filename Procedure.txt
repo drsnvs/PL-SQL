@@ -1,0 +1,73 @@
+-- Key Components of a Procedure:
+
+    -- IN Parameters: Used to pass values into the procedure.
+    -- OUT Parameters: Used to return values from the procedure.
+    -- IN OUT Parameters: Used for both passing values and returning modified values.
+    -- DML Operations: Modify data in the database using INSERT, UPDATE, DELETE.
+    -- Transaction Management: Control the transaction using COMMIT, ROLLBACK.
+    -- Exception Handling: Catch and handle errors during execution.
+    -- Calling Procedures: You can call procedures from anonymous PL/SQL blocks or other procedures/functions.
+
+
+-- create table test(
+--     t_id number,
+--     t_name varchar(20),
+--     t_salary number(10,2)
+-- )storage(
+--     initial 5k
+--     next 2k
+--     minextents 1
+--     maxextents 5 
+-- );
+
+-- create sequence seq_id 
+--     start with 1
+--     increment by 1
+--     nocycle;
+
+-- 1. Basic Procedure
+
+-- create or replace procedure basic_procedure (p_name varchar,p_salary number) is
+-- begin
+-- 	insert into test (t_id,t_name,t_salary) values(seq_id.nextval,p_name,p_salary);
+-- end basic_procedure;
+
+-- exec basic_procedure('Darshan',10000);
+
+-- select * from test;
+
+
+-- 2. Procedure with OUT Parameter
+
+-- create or replace procedure get_salary_procedure(p_id in number,p_salary out number) is
+-- 	x number;
+-- begin
+-- 	select t_salary into x from test where t_id = p_id;
+-- 	p_salary := x;
+-- end get_salary_procedure;
+
+-- declare 
+-- 	x number;
+-- begin
+-- 	get_salary_procedure(1,x);
+-- 	DBMS_OUTPUT.PUT_LINE('OUTPUT: '||x);
+-- end;
+
+-- SET SERVEROUTPUT ON;
+
+-- 3. Procedure with IN OUT Parameter
+
+-- create or replace procedure update_procedure (p_id in number,p_salary in out number) is
+-- begin
+-- 	p_salary := p_salary + 5000;
+
+-- 	update test set t_salary = p_salary where t_id = p_id;
+-- 	commit;
+-- end update_procedure;
+
+-- DECLARE
+--     salary NUMBER := 1000;
+-- BEGIN
+--     update_procedure(101, salary);
+--     DBMS_OUTPUT.PUT_LINE('Updated Bonus: ' || salary);
+-- END;
